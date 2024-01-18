@@ -35,17 +35,20 @@ public class LambdaTest {
     public void sumAll() throws Exception {
         int sum = Lambda.sumAll(numbers);
         assertThat(sum).isEqualTo(21);
+        assertThat(sum).isEqualTo(Lambda.sum(numbers, (i) -> true));
     }
 
     @Test
     public void sumAllEven() throws Exception {
         int sum = Lambda.sumAllEven(numbers);
         assertThat(sum).isEqualTo(12);
+        assertThat(sum).isEqualTo(Lambda.sum(numbers, i -> i % 2 == 0));
     }
 
     @Test
     public void sumAllOverThree() throws Exception {
         int sum = Lambda.sumAllOverThree(numbers);
         assertThat(sum).isEqualTo(15);
+        assertThat(sum).isEqualTo(Lambda.sum(numbers, i -> i > 3));
     }
 }

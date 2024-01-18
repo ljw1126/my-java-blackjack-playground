@@ -1,6 +1,7 @@
 package nextstep.fp;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public class Lambda {
     public static void printAllOld(List<Integer> numbers) {
@@ -52,5 +53,9 @@ public class Lambda {
             }
         }
         return total;
+    }
+
+    public static int sum(List<Integer> numbers, Predicate<Integer> condition) {
+        return numbers.stream().filter(condition).reduce(0, Integer::sum);
     }
 }
