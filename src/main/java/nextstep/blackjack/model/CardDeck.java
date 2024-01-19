@@ -1,7 +1,9 @@
 package nextstep.blackjack.model;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 public class CardDeck {
     private Stack<Card> deck;
@@ -10,13 +12,9 @@ public class CardDeck {
     }
 
     private Stack<Card> generateDeck() {
-        Stack<Card> playingCard = new Stack<>();
-
-        for(Pattern pattern : Pattern.values()) {
-            for(Denomination denomination : Denomination.values()) {
-                playingCard.push(new Card(pattern, denomination));
-            }
-        }
+        Stack<Card> playingCard = Arrays.stream(Pattern.values())
+                .flatMap(pattern -> Arrays.stream(Denomination.values()).map(denomination -> new Card(pattern, denomination)))
+                .collect(Collectors.toCollection(Stack::new));
 
         Collections.shuffle(playingCard);
         return playingCard;
