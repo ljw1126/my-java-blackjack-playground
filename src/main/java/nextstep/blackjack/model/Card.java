@@ -1,24 +1,24 @@
 package nextstep.blackjack.model;
 
 public class Card {
-    private String pattern;
-    private String value;
+    private Pattern pattern;
+    private Denomination denomination;
 
-    public Card(String pattern, String value) {
+    public Card(Pattern pattern, Denomination denomination) {
         this.pattern = pattern;
-        this.value = value;
+        this.denomination = denomination;
     }
 
-    public String getPattern() {
+    public Pattern getPattern() {
         return pattern;
     }
 
-    public String getValue() {
-        return value;
+    public Denomination getDenomination() {
+        return denomination;
     }
 
     @Override
     public String toString() {
-        return pattern + value;
+        return pattern.getShape() + " " + denomination.getText();
     }
 }

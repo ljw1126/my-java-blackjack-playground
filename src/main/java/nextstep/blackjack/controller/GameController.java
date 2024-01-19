@@ -12,7 +12,7 @@ public class GameController {
 
         // 카드 덱에서 2장씩 뽑아 할당하기
         CardDeck cardDeck = new CardDeck();
-
+        System.out.println(cardDeck.toString());
         // 보유 카드 출력 (이때 딜러는 한장만 공개)
 
         // GamerPhase

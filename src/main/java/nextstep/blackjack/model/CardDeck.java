@@ -1,41 +1,33 @@
 package nextstep.blackjack.model;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.*;
+import java.util.Collections;
+import java.util.Stack;
 
 public class CardDeck {
-    private List<Card> deck;
-    private static final String[] CARD_PATTERN = {"♣", "♥", "♠", "♦"};
-    private static final String[] CARD_VALUE = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "K", "Q", "J"};
-
+    private Stack<Card> deck;
     public CardDeck() {
         this.deck = this.generateDeck();
     }
 
-    private List<Card> generateDeck() {
-        return Arrays.stream(CARD_PATTERN)
-                .flatMap(pattern -> Arrays.stream(CARD_VALUE).map(value -> new Card(pattern, value)))
-                .collect(toCollection(LinkedList::new));
+    private Stack<Card> generateDeck() {
+        Stack<Card> playingCard = new Stack<>();
+
+        for(Pattern pattern : Pattern.values()) {
+            for(Denomination denomination : Denomination.values()) {
+                playingCard.push(new Card(pattern, denomination));
+            }
+        }
+
+        Collections.shuffle(playingCard);
+        return playingCard;
     }
 
     public Card draw() {
-        int randomNumber = getRandomNumber();
-        Card card = this.deck.get(randomNumber);
-        this.deck.remove(randomNumber);
-        return card;
+        return this.deck.pop();
     }
 
-    private int size() {
+    public int size() {
         return this.deck.size();
-    }
-
-    private int getRandomNumber() {
-        return new Random().nextInt(size());
     }
 
     @Override
