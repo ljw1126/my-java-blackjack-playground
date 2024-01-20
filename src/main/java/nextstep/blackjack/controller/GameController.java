@@ -23,6 +23,7 @@ public class GameController {
         List<Player> players = initPlayer(names);
 
         // 2. 배팅 금액 입력 -- **의 배팅 금액은?
+        requestBetAmountToPlayer(sc, players);
 
         CardDeck cardDeck = new CardDeck();
         // 3. 카드 덱에서 2장씩 뽑아 할당하기 (deal)
@@ -45,7 +46,16 @@ public class GameController {
         rule.showPlayCardAndPoint();
 
         // 8. 최종 수익 출력
-        rule.showFinalProfit();
+        rule.showRevenue(rule.getNameBetAmountResultMap());
+    }
+
+    private void requestBetAmountToPlayer(Scanner sc, List<Player> players) {
+        for(Player player : players) {
+            System.out.println(String.format("%s의 배팅금액은?", player.getName()));
+
+            int betAmount = sc.nextInt();
+            player.initBetAmount(betAmount);
+        }
     }
 
     private void playerPhase(Scanner sc, Player player, CardDeck cardDeck) {
@@ -66,6 +76,7 @@ public class GameController {
             }
         }
     }
+
 
     // 딜러는 16 이하면 무조건 한장 더 받고, 17 이상이면 넘긴다
     private void dealerPhase(Dealer dealer, CardDeck cardDeck) {

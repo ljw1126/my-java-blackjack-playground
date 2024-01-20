@@ -1,5 +1,7 @@
 package nextstep.blackjack.model;
 
+import java.util.List;
+
 public class Dealer extends AbstractParticipant {
     private static final int POINT_BOUNDARY = 16;
     public static final String DEALER_NAME = "딜러";
@@ -18,5 +20,15 @@ public class Dealer extends AbstractParticipant {
 
     public boolean drawable() {
         return getCards().sumPoints() <= POINT_BOUNDARY;
+    }
+
+    public BetAmount calculateRevenue(List<Player> playerList) {
+        BetAmount result = new BetAmount(0);
+
+        for(Player player : playerList) {
+            result = result.add(player.revenue(this).toNegative());
+        }
+
+        return result;
     }
 }

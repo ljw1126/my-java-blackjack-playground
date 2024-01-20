@@ -1,6 +1,7 @@
 package nextstep.blackjack.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -12,8 +13,7 @@ public class CardWrapper {
     private static final int BLACKJACK_HANDS = 2;
     private List<Card> playingCard = new ArrayList<>();
 
-    public CardWrapper() {
-    }
+    public CardWrapper() {}
 
     public static CardWrapper of(List<Card> cardList) {
         CardWrapper cards = new CardWrapper();
@@ -21,7 +21,7 @@ public class CardWrapper {
         return cards;
     }
 
-    private void addAll(List<Card> cardList) {
+    public void addAll(List<Card> cardList) {
         playingCard.addAll(cardList);
     }
 
