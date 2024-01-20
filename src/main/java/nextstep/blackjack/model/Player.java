@@ -1,12 +1,13 @@
 package nextstep.blackjack.model;
 
-public interface Player {
-    String getName();
-    void firstCalling();
+public class Player extends AbstractParticipant {
+    public Player(String name) {
+        super(name);
+    }
 
-    void calling();
+    @Override
+    public void firstCalling() {
+        calling();
+    }
 
-    void receiveCard(Card card);
-
-    int sumPoint();
 }

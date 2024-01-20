@@ -17,6 +17,14 @@ public class Card {
         return denomination;
     }
 
+    public int getPont() {
+        return denomination.getPoint();
+    }
+
+    public int sum(int points) {
+        return denomination.sum(points);
+    }
+
     @Override
     public String toString() {
         return pattern.getShape() + " " + denomination.getText();
