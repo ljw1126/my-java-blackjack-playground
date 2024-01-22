@@ -1,10 +1,8 @@
 package nextstep.blackjack.model.rule;
 
-import nextstep.blackjack.model.participant.BetAmount;
 import nextstep.blackjack.model.participant.Dealer;
 import nextstep.blackjack.model.participant.Participant;
 import nextstep.blackjack.model.participant.Player;
-import nextstep.blackjack.model.card.Cards;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -12,58 +10,58 @@ import java.util.List;
 import java.util.Map;
 
 public class Rule {
-    private Dealer dealer;
-    private List<Player> playerList;
-    private List<Participant> participants = new LinkedList<>();
+    private final Dealer dealer;
+    private final List<Player> playerList;
+    private final List<Participant> participants;
 
     public Rule(Dealer dealer, List<Player> playerList) {
         this.dealer = dealer;
         this.playerList = playerList;
 
+        this.participants = new LinkedList<>();
         this.participants.add(dealer);
         this.participants.addAll(playerList);
     }
 
-    public void showPlayCardAndPoint() {
-        StringBuilder sb = new StringBuilder();
+    public List<Participant> getParticipant() {
+        return participants;
+    }
 
-        for (Participant player : participants) {
-            appendResult(sb, player);
+    public Map<String, Integer> judgement() {
+        Map<String, Integer> resultMap = new LinkedHashMap<>();
+        for(Player player : playerList) {
+            int profit = (int) compare(dealer, player);
+            resultMap.put(dealer.getName(), resultMap.getOrDefault(dealer.getName(), 0) + Math.negateExact(profit));
+            resultMap.put(player.getName(), profit);
         }
 
-        System.out.println(sb);
+        return resultMap;
     }
 
-    private void appendResult(StringBuilder sb, Participant participant) {
-        Cards cards = participant.getCards();
-        sb.append(participant.getName())
-                .append(" : ")
-                .append(cards.joinPlayingCard())
-                .append(" -결과:")
-                .append(cards.score())
-                .append("\n");
-    }
-
-    public void showRevenue(Map<String, BetAmount> betAmountMap) {
-        System.out.println("## 최종수익");
-        StringBuilder sb = new StringBuilder();
-
-        for(String name : betAmountMap.keySet()) {
-            sb.append(name).append(" : ").append(betAmountMap.get(name)).append("\n");
+    public double compare(Dealer dealer, Player player) {
+        if(isPlayerWin(dealer, player)) {
+            return player.profit();
         }
 
-        System.out.println(sb);
-    }
-
-    public Map<String, BetAmount> getNameBetAmountResultMap() {
-        Map<String, BetAmount> betAmountMap = new LinkedHashMap<>();
-        // 딜러 수익
-        betAmountMap.put(dealer.getName(), dealer.calculateRevenue(playerList));
-
-        // 유저 수익
-        for (Player player : playerList) {
-            betAmountMap.put(player.getName(), player.revenue(dealer));
+        if(isPlayerLose(dealer, player)) {
+            double profit = player.profit();
+            return profit < 0 ? profit : -profit; // TODO
         }
-        return betAmountMap;
+
+        return 0.0;
     }
+
+    public boolean isPlayerWin(Dealer dealer, Player player) {
+        return (dealer.isBust() && !player.isBust())
+                || (!dealer.isBlackjack() && player.isBlackjack())
+                || (!dealer.isBust() && !player.isBust() && player.score().greaterThan(dealer.score()));
+    }
+
+    public boolean isPlayerLose(Dealer dealer, Player player) {
+        return (dealer.isBust() && player.isBust())
+                || (!dealer.isBust() && player.isBust())
+                || (dealer.isBlackjack() && !player.isBlackjack())
+                || (!dealer.isBust() && !player.isBust() && dealer.score().greaterThan(player.score()));
+    }
+
 }
