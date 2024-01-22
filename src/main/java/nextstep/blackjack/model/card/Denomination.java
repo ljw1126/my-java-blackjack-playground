@@ -35,23 +35,4 @@ public enum Denomination {
     public boolean isAce() {
         return this == ACE;
     }
-
-    public int sum(int points) {
-        int sum = points;
-        if(this.isAce()) {
-            sum += getAcePointBy(points);
-            return sum;
-        }
-
-        sum += getPoint();
-        return sum;
-    }
-
-    private int getAcePointBy(int points) {
-        if(points + 11 <= 21) {
-            return 11;
-        }
-
-        return 1;
-    }
 }

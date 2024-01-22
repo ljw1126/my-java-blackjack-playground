@@ -40,7 +40,7 @@ public class Rule {
                 .append(" : ")
                 .append(cards.joinPlayingCard())
                 .append(" -결과:")
-                .append(cards.sum())
+                .append(cards.score())
                 .append("\n");
     }
 

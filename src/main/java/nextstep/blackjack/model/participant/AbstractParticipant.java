@@ -24,7 +24,9 @@ public abstract class AbstractParticipant implements Participant {
 
     @Override
     public void receiveCards(List<PlayingCard> cardList) {
-        cards.addAll(cardList);
+        for(PlayingCard card : cardList) {
+            cards.add(card);
+        }
     }
 
     @Override

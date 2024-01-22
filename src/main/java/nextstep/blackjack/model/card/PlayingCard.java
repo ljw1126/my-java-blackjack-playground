@@ -17,12 +17,12 @@ public class PlayingCard {
         return denomination;
     }
 
-    public int getPont() {
+    public int getPoint() {
         return denomination.getPoint();
     }
 
-    public int sum(int points) {
-        return denomination.sum(points);
+    public boolean isAce() {
+        return denomination.isAce();
     }
 
     @Override

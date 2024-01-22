@@ -2,6 +2,7 @@ package nextstep.blackjack.model;
 
 import nextstep.blackjack.model.card.Cards;
 import nextstep.blackjack.model.card.PlayingCard;
+import nextstep.blackjack.model.card.Score;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -15,18 +16,18 @@ import static nextstep.blackjack.model.card.Denomination.*;
 import static nextstep.blackjack.model.card.Pattern.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CardWrapperTest {
+class CardsTest {
 
     @ParameterizedTest
     @MethodSource("cardListAndSumPointProvider")
-    void sumPoints(List<PlayingCard> cardList, int expected) {
+    void score(List<PlayingCard> cardList, int expected) {
         // given
         // when
-        Cards cards = Cards.of(cardList);
-        int actual = cards.sum();
+        Cards cards = new Cards(cardList);
+        Score actual = cards.score();
 
         // then
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual).isEqualTo(new Score(expected));
     }
 
     static Stream<Arguments> cardListAndSumPointProvider() {
@@ -42,13 +43,13 @@ class CardWrapperTest {
     @DisplayName("카드 합이 21이고, 패가 두 장인 경우 blackjack이다")
     @ParameterizedTest
     @MethodSource("blackjackPlayingCardProvider")
-    void blackjack(List<PlayingCard> cardList, int point, boolean expected) {
+    void blackjack(List<PlayingCard> cardList, int score, boolean expected) {
         // given
         // when
-        Cards cards = Cards.of(cardList);
+        Cards cards = new Cards(cardList);
 
         // then
-        assertThat(cards.sum()).isEqualTo(point);
+        assertThat(cards.score()).isEqualTo(new Score(score));
         assertThat(cards.isBlackjack()).isEqualTo(expected);
     }
 
@@ -63,13 +64,13 @@ class CardWrapperTest {
     @DisplayName("카드 포인트 합이 21을 초과하면 bust이다")
     @ParameterizedTest
     @MethodSource("bustPlayingCardProvider")
-    void bust(List<PlayingCard> cardList, int point, boolean expected) {
+    void bust(List<PlayingCard> cardList, int score, boolean expected) {
         // given
         // when
-        Cards cards = Cards.of(cardList);
+        Cards cards = new Cards(cardList);
 
         // then
-        assertThat(cards.sum()).isEqualTo(point);
+        assertThat(cards.score()).isEqualTo(new Score(score));
         assertThat(cards.isBust()).isEqualTo(expected);
     }
 
