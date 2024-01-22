@@ -1,9 +1,6 @@
 package nextstep.blackjack.model.card;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static java.util.stream.Collectors.joining;
 
@@ -37,7 +34,7 @@ public class Cards {
         Score score = sum();
 
         final long aceCount = getAceCount();
-        for(int i = 0; i < aceCount; i++) {
+        for (int i = 0; i < aceCount; i++) {
             score = score.plusTenIfNotBust();
         }
 
@@ -68,5 +65,18 @@ public class Cards {
                 .mapToInt(PlayingCard::getPoint)
                 .sum()
         );
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cards cards = (Cards) o;
+        return Objects.equals(playingCardList, cards.playingCardList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(playingCardList);
     }
 }
