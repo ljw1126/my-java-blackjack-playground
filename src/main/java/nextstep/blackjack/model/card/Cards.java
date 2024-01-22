@@ -67,6 +67,10 @@ public class Cards {
         );
     }
 
+    public PlayingCard get(int idx) {
+        return playingCardList.get(idx);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -7,8 +7,6 @@ public interface State {
     State draw(PlayingCard playingCard);
     boolean isFinished();
     double profit(double money);
-
     State stay();
-
     Cards cards();
 }

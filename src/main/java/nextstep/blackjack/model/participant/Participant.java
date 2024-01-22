@@ -2,16 +2,21 @@ package nextstep.blackjack.model.participant;
 
 import nextstep.blackjack.model.card.Cards;
 import nextstep.blackjack.model.card.PlayingCard;
-
-import java.util.List;
+import nextstep.blackjack.model.card.Score;
 
 public interface Participant {
     String getName();
-    void firstCalling();
-    void calling();
-    void receiveCard(PlayingCard card);
-    void receiveCards(List<PlayingCard> cards);
-    Cards getCards();
+    void receivePlayingCard(PlayingCard card);
+    Cards cards();
     boolean isBust();
     boolean isBlackjack();
+    String joiningPlayingCard();
+
+    Score score();
+
+    double profit();
+
+    void stay();
+
+    boolean isFinished();
 }

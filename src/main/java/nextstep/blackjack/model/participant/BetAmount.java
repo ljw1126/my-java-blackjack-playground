@@ -12,14 +12,13 @@ public class BetAmount {
         this.amount = amount;
     }
 
-    public static BetAmount of(double amount) {
-        return new BetAmount(amount);
-    }
-
     public BetAmount initBetAmount(double initBetAmount) {
         return new BetAmount(initBetAmount);
     }
 
+    public double amount() {
+        return amount;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -33,32 +32,8 @@ public class BetAmount {
         return Objects.hash(amount);
     }
 
-    public BetAmount applyBlackjackRate() {
-        return new BetAmount(this.amount * GameResult.BLACKJACK.getEarningRate());
-    }
-
-    public BetAmount applyWinningRate() {
-        return new BetAmount(this.amount * GameResult.WIN.getEarningRate());
-    }
-
-    public BetAmount applyLoseRate() {
-        return new BetAmount(this.amount * GameResult.LOSE.getEarningRate());
-    }
-
-    public BetAmount applyDrawRate() {
-        return new BetAmount(this.amount * GameResult.DRAW.getEarningRate());
-    }
-
-    public BetAmount add(BetAmount other) {
-        return new BetAmount(this.amount + other.amount);
-    }
-
     @Override
     public String toString() {
         return String.valueOf(amount);
-    }
-
-    public BetAmount toNegative() {
-        return new BetAmount(this.amount * -1);
     }
 }
