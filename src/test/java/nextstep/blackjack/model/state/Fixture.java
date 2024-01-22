@@ -4,9 +4,7 @@ import nextstep.blackjack.model.card.Cards;
 import nextstep.blackjack.model.card.PlayingCard;
 
 import static nextstep.blackjack.model.card.Denomination.*;
-import static nextstep.blackjack.model.card.Denomination.QUEEN;
 import static nextstep.blackjack.model.card.Pattern.*;
-import static nextstep.blackjack.model.card.Pattern.SPADE;
 
 public class Fixture {
     public static final PlayingCard HEART_ACE = new PlayingCard(HEART, ACE);

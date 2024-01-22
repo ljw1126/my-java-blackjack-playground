@@ -11,7 +11,7 @@ import nextstep.blackjack.view.OutputView;
 import java.util.Arrays;
 import java.util.List;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 public class GameController {
     public void play() {
