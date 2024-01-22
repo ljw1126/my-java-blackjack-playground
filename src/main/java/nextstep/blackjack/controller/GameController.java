@@ -1,6 +1,11 @@
 package nextstep.blackjack.controller;
 
-import nextstep.blackjack.model.*;
+import nextstep.blackjack.model.card.PlayingCard;
+import nextstep.blackjack.model.card.CardDeck;
+import nextstep.blackjack.model.participant.Dealer;
+import nextstep.blackjack.model.participant.Participant;
+import nextstep.blackjack.model.participant.Player;
+import nextstep.blackjack.model.rule.Rule;
 
 import java.util.Arrays;
 import java.util.List;
@@ -119,7 +124,7 @@ public class GameController {
     // 딜러와 플레이어에게 카드 2장씩 나눠준다
     private void deal(Participant player, CardDeck cardDeck) {
         for(int i = 1; i <= INIT_CARD; i++) {
-            Card card = cardDeck.draw();
+            PlayingCard card = cardDeck.draw();
             player.receiveCard(card);
         }
     }

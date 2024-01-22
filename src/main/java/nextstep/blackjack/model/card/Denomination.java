@@ -1,4 +1,4 @@
-package nextstep.blackjack.model;
+package nextstep.blackjack.model.card;
 
 //Denomination : 끗수
 public enum Denomination {

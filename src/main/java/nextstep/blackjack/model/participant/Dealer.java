@@ -1,4 +1,4 @@
-package nextstep.blackjack.model;
+package nextstep.blackjack.model.participant;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class Dealer extends AbstractParticipant {
     }
 
     public boolean drawable() {
-        return getCards().sumPoints() <= POINT_BOUNDARY;
+        return getCards().sum() <= POINT_BOUNDARY;
     }
 
     public BetAmount calculateRevenue(List<Player> playerList) {

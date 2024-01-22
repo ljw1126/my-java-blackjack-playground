@@ -1,66 +1,65 @@
-package nextstep.blackjack.model;
+package nextstep.blackjack.model.card;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
-public class CardWrapper {
+public class Cards {
     private static final int MAX_POINT = 21;
     private static final int BLACKJACK_HANDS = 2;
-    private List<Card> playingCard = new ArrayList<>();
+    private List<PlayingCard> playingCard = new ArrayList<>();
 
-    public CardWrapper() {}
+    public Cards() {}
 
-    public static CardWrapper of(List<Card> cardList) {
-        CardWrapper cards = new CardWrapper();
+    public static Cards of(List<PlayingCard> cardList) {
+        Cards cards = new Cards();
         cards.addAll(cardList);
         return cards;
     }
 
-    public void addAll(List<Card> cardList) {
+    public void addAll(List<PlayingCard> cardList) {
         playingCard.addAll(cardList);
     }
 
-    public void add(Card card) {
+    public void add(PlayingCard card) {
         playingCard.add(card);
     }
 
-    public Card get(int idx) {
+    public PlayingCard get(int idx) {
         return playingCard.get(idx);
     }
 
     public String joinPlayingCard() {
         return playingCard.stream()
-                .map(Card::toString)
+                .map(PlayingCard::toString)
                 .collect(joining(", "));
     }
 
-    public int sumPoints() {
-        List<Card> sorted = soredPlayingCardByPointDesc();
+    public int sum() {
+        List<PlayingCard> sorted = soredPlayingCardByPointDesc();
 
         int points = 0;
-        for(Card card : sorted) {
+        for(PlayingCard card : sorted) {
             points = card.sum(points);
         }
 
         return points;
     }
 
-    private List<Card> soredPlayingCardByPointDesc() {
+    private List<PlayingCard> soredPlayingCardByPointDesc() {
         return  playingCard.stream()
-                .sorted(Comparator.comparingInt(Card::getPont).reversed())
+                .sorted(Comparator.comparingInt(PlayingCard::getPont).reversed())
                 .collect(toList());
     }
 
     public boolean isBlackjack() {
-        return sumPoints() == MAX_POINT && playingCard.size() == BLACKJACK_HANDS;
+        return sum() == MAX_POINT && playingCard.size() == BLACKJACK_HANDS;
     }
 
     public boolean isBust() {
-        return sumPoints() > MAX_POINT;
+        return sum() > MAX_POINT;
     }
 }

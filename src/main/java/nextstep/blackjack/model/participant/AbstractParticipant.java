@@ -1,26 +1,29 @@
-package nextstep.blackjack.model;
+package nextstep.blackjack.model.participant;
+
+import nextstep.blackjack.model.card.Cards;
+import nextstep.blackjack.model.card.PlayingCard;
 
 import java.util.List;
 
 public abstract class AbstractParticipant implements Participant {
 
     protected String name;
-    protected CardWrapper cards;
+    protected Cards cards;
     protected BetAmount betAmount;
 
     public AbstractParticipant(String name) {
         this.name = name;
-        this.cards = new CardWrapper();
+        this.cards = new Cards();
         this.betAmount = BetAmount.ZERO_BETAMOUNT;
     }
 
     @Override
-    public void receiveCard(Card card) {
+    public void receiveCard(PlayingCard card) {
         cards.add(card);
     }
 
     @Override
-    public void receiveCards(List<Card> cardList) {
+    public void receiveCards(List<PlayingCard> cardList) {
         cards.addAll(cardList);
     }
 
@@ -29,7 +32,7 @@ public abstract class AbstractParticipant implements Participant {
         return this.name;
     }
 
-    public CardWrapper getCards() {
+    public Cards getCards() {
         return cards;
     }
 

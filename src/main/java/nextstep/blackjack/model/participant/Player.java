@@ -1,4 +1,6 @@
-package nextstep.blackjack.model;
+package nextstep.blackjack.model.participant;
+
+import nextstep.blackjack.model.card.Cards;
 
 public class Player extends AbstractParticipant {
     public Player(String name) {
@@ -28,10 +30,10 @@ public class Player extends AbstractParticipant {
     }
 
     public GameResult judgement(Dealer dealer) {
-        CardWrapper dealerCards = dealer.getCards();
-        CardWrapper playerCards = this.getCards();
-        int dealerPoint = dealerCards.sumPoints();
-        int playerPoints = playerCards.sumPoints();
+        Cards dealerCards = dealer.getCards();
+        Cards playerCards = this.getCards();
+        int dealerPoint = dealerCards.sum();
+        int playerPoints = playerCards.sum();
 
         if(isOnlyPlayerBlackjack(dealerCards)) {
             return GameResult.BLACKJACK; // 1.5
@@ -56,16 +58,16 @@ public class Player extends AbstractParticipant {
         return GameResult.DRAW; // 0, 배팅한 금액만 돌려 받음
     }
 
-    private boolean isPlayerWin(CardWrapper dealerCards, int dealerPoint, int playerPoints) {
+    private boolean isPlayerWin(Cards dealerCards, int dealerPoint, int playerPoints) {
         return (!dealerCards.isBust() && !isBust() && (dealerPoint < playerPoints))
                 || (dealerCards.isBust() && !isBust());
     }
 
-    private boolean isPlayerLose(CardWrapper dealerCards, int dealerPoint, int playerPoints) {
+    private boolean isPlayerLose(Cards dealerCards, int dealerPoint, int playerPoints) {
         return isBust() || (!dealerCards.isBust() && !isBust() && playerPoints < dealerPoint);
     }
 
-    private boolean isOnlyPlayerBlackjack(CardWrapper dealerCards) {
+    private boolean isOnlyPlayerBlackjack(Cards dealerCards) {
         return isBlackjack() && !dealerCards.isBlackjack();
     }
 

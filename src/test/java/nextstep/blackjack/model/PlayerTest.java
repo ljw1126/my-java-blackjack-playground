@@ -1,25 +1,30 @@
 package nextstep.blackjack.model;
 
+import nextstep.blackjack.model.card.PlayingCard;
+import nextstep.blackjack.model.participant.BetAmount;
+import nextstep.blackjack.model.participant.Dealer;
+import nextstep.blackjack.model.participant.GameResult;
+import nextstep.blackjack.model.participant.Player;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static nextstep.blackjack.model.Denomination.*;
-import static nextstep.blackjack.model.Pattern.*;
+import static nextstep.blackjack.model.card.Denomination.*;
+import static nextstep.blackjack.model.card.Pattern.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PlayerTest {
     
-    private static final List<Card> DIAMOND_BLACKJACK = Arrays.asList(new Card(DIAMOND, ACE), new Card(DIAMOND, KING));
-    private static final List<Card> HEART_BLACKJACK = Arrays.asList(new Card(HEART, ACE), new Card(HEART, QUEEN));
-    private static final List<Card> CLOVER_BLACKJACK = Arrays.asList(new Card(CLOVER, ACE), new Card(CLOVER, JACK));
-    private static final List<Card> SPADE_BLACKJACK = Arrays.asList(new Card(SPADE, ACE), new Card(SPADE, KING));
+    private static final List<PlayingCard> DIAMOND_BLACKJACK = Arrays.asList(new PlayingCard(DIAMOND, ACE), new PlayingCard(DIAMOND, KING));
+    private static final List<PlayingCard> HEART_BLACKJACK = Arrays.asList(new PlayingCard(HEART, ACE), new PlayingCard(HEART, QUEEN));
+    private static final List<PlayingCard> CLOVER_BLACKJACK = Arrays.asList(new PlayingCard(CLOVER, ACE), new PlayingCard(CLOVER, JACK));
+    private static final List<PlayingCard> SPADE_BLACKJACK = Arrays.asList(new PlayingCard(SPADE, ACE), new PlayingCard(SPADE, KING));
     
-    private static final List<Card> CARD_17 = Arrays.asList(new Card(DIAMOND, KING), new Card(HEART, SEVEN));
-    private static final List<Card> CARD_19 = Arrays.asList(new Card(DIAMOND, KING), new Card(HEART, NINE));
-    private static final List<Card> CARD_21 = Arrays.asList(new Card(DIAMOND, KING), new Card(HEART, FIVE), new Card(SPADE, SIX));
-    private static final List<Card> CARD_22 = Arrays.asList(new Card(DIAMOND, KING), new Card(HEART, QUEEN), new Card(CLOVER, TWO));
+    private static final List<PlayingCard> CARD_17 = Arrays.asList(new PlayingCard(DIAMOND, KING), new PlayingCard(HEART, SEVEN));
+    private static final List<PlayingCard> CARD_19 = Arrays.asList(new PlayingCard(DIAMOND, KING), new PlayingCard(HEART, NINE));
+    private static final List<PlayingCard> CARD_21 = Arrays.asList(new PlayingCard(DIAMOND, KING), new PlayingCard(HEART, FIVE), new PlayingCard(SPADE, SIX));
+    private static final List<PlayingCard> CARD_22 = Arrays.asList(new PlayingCard(DIAMOND, KING), new PlayingCard(HEART, QUEEN), new PlayingCard(CLOVER, TWO));
 
 
     @Test

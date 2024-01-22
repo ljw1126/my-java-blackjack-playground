@@ -1,4 +1,4 @@
-package nextstep.blackjack.model;
+package nextstep.blackjack.model.participant;
 
 public enum GameResult {
     WIN(1.0),

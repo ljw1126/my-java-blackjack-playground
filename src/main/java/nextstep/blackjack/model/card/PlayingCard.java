@@ -1,10 +1,10 @@
-package nextstep.blackjack.model;
+package nextstep.blackjack.model.card;
 
-public class Card {
+public class PlayingCard {
     private Pattern pattern;
     private Denomination denomination;
 
-    public Card(Pattern pattern, Denomination denomination) {
+    public PlayingCard(Pattern pattern, Denomination denomination) {
         this.pattern = pattern;
         this.denomination = denomination;
     }

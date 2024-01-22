@@ -1,4 +1,10 @@
-package nextstep.blackjack.model;
+package nextstep.blackjack.model.rule;
+
+import nextstep.blackjack.model.participant.BetAmount;
+import nextstep.blackjack.model.participant.Dealer;
+import nextstep.blackjack.model.participant.Participant;
+import nextstep.blackjack.model.participant.Player;
+import nextstep.blackjack.model.card.Cards;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -29,12 +35,12 @@ public class Rule {
     }
 
     private void appendResult(StringBuilder sb, Participant participant) {
-        CardWrapper cards = participant.getCards();
+        Cards cards = participant.getCards();
         sb.append(participant.getName())
                 .append(" : ")
                 .append(cards.joinPlayingCard())
                 .append(" -결과:")
-                .append(cards.sumPoints())
+                .append(cards.sum())
                 .append("\n");
     }
 

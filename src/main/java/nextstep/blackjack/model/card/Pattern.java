@@ -1,4 +1,4 @@
-package nextstep.blackjack.model;
+package nextstep.blackjack.model.card;
 
 public enum Pattern {
     DIAMOND("♦"),
