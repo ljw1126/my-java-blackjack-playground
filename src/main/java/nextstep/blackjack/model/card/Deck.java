@@ -1,5 +1,6 @@
 package nextstep.blackjack.model.card;
 
+import java.util.Collections;
 import java.util.Stack;
 
 public class Deck {
@@ -22,6 +23,8 @@ public class Deck {
                 result.push(new Card(pattern, denomination));
             }
         }
+
+        Collections.shuffle(result);
 
         return result;
     }
