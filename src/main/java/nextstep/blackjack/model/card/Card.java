@@ -15,6 +15,14 @@ public class Card {
         return denomination.getPoint();
     }
 
+    public boolean isAce() {
+        return this.denomination.isAce();
+    }
+
+    public String show() {
+        return this.pattern.getShape() + this.denomination.getText();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
