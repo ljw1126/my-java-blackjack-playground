@@ -3,7 +3,7 @@ package nextstep.blackjack.model.state;
 import nextstep.blackjack.model.card.Cards;
 
 public class Blackjack extends Finished{
-    private static final double rate = 1.5;
+    private static final double RATE = 1.5;
 
     public Blackjack(Cards cards) {
         super(cards);
@@ -11,6 +11,6 @@ public class Blackjack extends Finished{
 
     @Override
     public double profit(double betAmount) {
-        return rate * betAmount;
+        return RATE * betAmount;
     }
 }
