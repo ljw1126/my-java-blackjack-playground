@@ -1,8 +1,11 @@
 package nextstep.blackjack.model.rule;
 
-import nextstep.blackjack.model.card.Cards;
 import nextstep.blackjack.model.participant.Dealer;
 import nextstep.blackjack.model.participant.Player;
+import nextstep.blackjack.model.state.Blackjack;
+import nextstep.blackjack.model.state.Bust;
+import nextstep.blackjack.model.state.Hit;
+import nextstep.blackjack.model.state.State;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,18 +21,20 @@ class RuleTest {
 
     public static Stream<Arguments> dealerWinDataProvider() {
         return Stream.of(
-            Arguments.arguments("딜러만 블랙잭인 경우", ACE_QUEEN_BLACKJACK, ACE_NINE_20),
-            Arguments.arguments("플레이어가 버스트인 경우", ACE_NINE_20, QUEEN_NINE_FIVE_25_BUST),
-            Arguments.arguments("둘 다 버스트 아니고, 딜러 점수가 높은 경우", TEN_NINE_19, NINE_EIGHT_17)
+            Arguments.arguments("딜러만 블랙잭인 경우", new Blackjack(ACE_QUEEN_BLACKJACK), new Hit(ACE_NINE_20)),
+            Arguments.arguments("플레이어가 버스트인 경우", new Hit(ACE_NINE_20), new Bust(QUEEN_NINE_FIVE_25_BUST)),
+            Arguments.arguments("둘 다 버스트 아니고, 딜러 점수가 높은 경우", new Hit(TEN_NINE_19), new Hit(NINE_EIGHT_17))
         );
     }
 
     @ParameterizedTest(name = "케이스 : {0}")
     @MethodSource("dealerWinDataProvider")
-    void dealerWin(String title, Cards dealerCards, Cards playerCards) {
-        Dealer dealer = new Dealer(dealerCards);
+    void dealerWin(String title, State dealerState, State plyaerState) {
+        Dealer dealer = new Dealer();
+        dealer.setState(dealerState);
 
-        Player player = new Player("플레이어", playerCards);
+        Player player = new Player("플레이어");
+        player.setState(plyaerState);
         player.initBetAmount(1000);
 
         Rule rule = new Rule(dealer, Arrays.asList(player));
@@ -42,18 +47,20 @@ class RuleTest {
 
     public static Stream<Arguments> playerWinDataProvider() {
         return Stream.of(
-                Arguments.arguments("플레이어만 블랙잭인 경우", ACE_NINE_20, ACE_QUEEN_BLACKJACK, -1500.0, 1500.0),
-                Arguments.arguments("딜러가 버스트인 경우", QUEEN_NINE_FIVE_25_BUST, TEN_NINE_19, -1000.0, 1000.0),
-                Arguments.arguments("둘 다 버스트 아니고, 플레이어 점수가 더 높은 경우",NINE_EIGHT_17, TEN_NINE_19, -1000.0, 1000.0)
+                Arguments.arguments("플레이어만 블랙잭인 경우", new Hit(ACE_NINE_20), new Blackjack(ACE_QUEEN_BLACKJACK), -1500.0, 1500.0),
+                Arguments.arguments("딜러가 버스트인 경우", new Bust(QUEEN_NINE_FIVE_25_BUST), new Hit(TEN_NINE_19), -1000.0, 1000.0),
+                Arguments.arguments("둘 다 버스트 아니고, 플레이어 점수가 더 높은 경우", new Hit(NINE_EIGHT_17), new Hit(TEN_NINE_19), -1000.0, 1000.0)
         );
     }
 
     @ParameterizedTest(name = "케이스 : {0}")
     @MethodSource("playerWinDataProvider")
-    void playerWin(String title, Cards dealerCards, Cards playerCards, double dealerProfit, double playerProfit) {
-        Dealer dealer = new Dealer(dealerCards);
+    void playerWin(String title, State dealerState, State plyaerState, double dealerProfit, double playerProfit) {
+        Dealer dealer = new Dealer();
+        dealer.setState(dealerState);
 
-        Player player = new Player("플레이어", playerCards);
+        Player player = new Player("플레이어");
+        player.setState(plyaerState);
         player.initBetAmount(1000);
 
         Rule rule = new Rule(dealer, Arrays.asList(player));
@@ -65,17 +72,19 @@ class RuleTest {
 
     public static Stream<Arguments> drawDataProvider() {
         return Stream.of(
-                Arguments.arguments("둘 다 블랙잭인 경우", ACE_KING_BLACKJACK, ACE_QUEEN_BLACKJACK),
-                Arguments.arguments("점수가 같은 경우", NINE_KING_19, TEN_NINE_19)
+                Arguments.arguments("둘 다 블랙잭인 경우", new Blackjack(ACE_KING_BLACKJACK), new Blackjack(ACE_QUEEN_BLACKJACK)),
+                Arguments.arguments("점수가 같은 경우", new Hit(NINE_KING_19), new Hit(TEN_NINE_19))
         );
     }
 
     @ParameterizedTest(name = "케이스 : {0}")
     @MethodSource("drawDataProvider")
-    void draw(String title, Cards dealerCards, Cards playerCards) {
-        Dealer dealer = new Dealer(dealerCards);
+    void draw(String title, State dealerState, State plyaerState) {
+        Dealer dealer = new Dealer();
+        dealer.setState(dealerState);
 
-        Player player = new Player("플레이어", playerCards);
+        Player player = new Player("플레이어");
+        player.setState(plyaerState);
         player.initBetAmount(1000);
 
         Rule rule = new Rule(dealer, Arrays.asList(player));

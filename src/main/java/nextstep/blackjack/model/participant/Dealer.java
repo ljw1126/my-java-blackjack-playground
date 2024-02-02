@@ -11,16 +11,12 @@ public class Dealer extends AbstractParticipant{
     public Dealer() {
         super(DEFAULT_NAME);
     }
-    public Dealer(Cards cards) {
-        super(DEFAULT_NAME, cards);
-    }
-
     public boolean drawable() {
         return score().less(DRAWABLE_POINT);
     }
 
     public String showFirstCard() {
-        Card card = this.cards.get(0);
+        Card card = cards().get(0);
         return card.show();
     }
 }

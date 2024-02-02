@@ -2,18 +2,16 @@ package nextstep.blackjack.model.participant;
 
 import nextstep.blackjack.model.card.Card;
 import nextstep.blackjack.model.card.Cards;
+import nextstep.blackjack.model.state.Hit;
+import nextstep.blackjack.model.state.State;
 
 public abstract class AbstractParticipant implements Participant {
     protected String name;
-    protected Cards cards;
+    protected State state;
     private int betAmount;
     public AbstractParticipant(String name) {
-        this(name, new Cards());
-    }
-
-    public AbstractParticipant(String name, Cards cards) {
         this.name = name;
-        this.cards = cards;
+        this.state = new Hit(new Cards());
         this.betAmount = 0;
     }
 
@@ -24,7 +22,13 @@ public abstract class AbstractParticipant implements Participant {
 
     @Override
     public void draw(Card card) {
-        this.cards.add(card);
+        State next = this.state.draw(card);
+        setState(next);
+    }
+
+    @Override
+    public void setState(State next) {
+        this.state = next;
     }
 
     @Override
@@ -33,8 +37,8 @@ public abstract class AbstractParticipant implements Participant {
     }
 
     @Override
-    public Cards getCards() {
-        return this.cards;
+    public Cards cards() {
+        return state.cards();
     }
 
     @Override
@@ -44,21 +48,21 @@ public abstract class AbstractParticipant implements Participant {
 
     @Override
     public boolean isBlackjack() {
-        return this.cards.isBlackjack();
+        return cards().isBlackjack();
     }
 
     @Override
     public boolean isBust() {
-        return this.cards.isBust();
+        return cards().isBust();
     }
 
     @Override
     public Score score() {
-        return this.cards.score();
+        return cards().score();
     }
 
     @Override
     public String showCards() {
-        return cards.joinCardList();
+        return cards().joinCardList();
     }
 }
