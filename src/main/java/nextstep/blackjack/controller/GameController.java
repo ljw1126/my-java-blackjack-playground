@@ -14,6 +14,9 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 public class GameController {
+
+    private static final String DRAWABLE_DEALER = "딜러는 16이하라 한장의 카드를 더 받았습니다.";
+
     public void play() {
         // 1. 플레이어 입력
         CardDeck cardDeck = new CardDeck();
@@ -56,7 +59,7 @@ public class GameController {
     // 딜러는 16 이하면 무조건 한장 더 받고, 17 이상이면 넘긴다
     private void dealerPhase(Dealer dealer, CardDeck cardDeck) {
         if(dealer.drawable()) {
-            System.out.println("딜러는 16이하라 한장의 카드를 더 받았습니다.");
+            System.out.println(DRAWABLE_DEALER);
             dealer.receivePlayingCard(cardDeck.draw());
             System.out.println();
         }

@@ -44,11 +44,18 @@ public class Rule {
         }
 
         if(isPlayerLose(dealer, player)) {
-            double profit = player.profit();
-            return profit < 0 ? profit : -profit; // TODO
+            return negativeValue(player.profit());
         }
 
         return 0.0;
+    }
+
+    private double negativeValue(double profit) {
+        if(profit < 0) {
+            return profit;
+        }
+
+        return -(profit);
     }
 
     public boolean isPlayerWin(Dealer dealer, Player player) {
