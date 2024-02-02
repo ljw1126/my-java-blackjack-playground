@@ -1,6 +1,7 @@
 package nextstep.blackjack.model.participant;
 
 import nextstep.blackjack.model.card.Card;
+import nextstep.blackjack.model.card.Cards;
 
 public class Dealer extends AbstractParticipant{
 
@@ -9,6 +10,9 @@ public class Dealer extends AbstractParticipant{
 
     public Dealer() {
         super(DEFAULT_NAME);
+    }
+    public Dealer(Cards cards) {
+        super(DEFAULT_NAME, cards);
     }
 
     public boolean drawable() {

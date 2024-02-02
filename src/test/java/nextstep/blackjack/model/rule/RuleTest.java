@@ -1,28 +1,35 @@
 package nextstep.blackjack.model.rule;
 
-import nextstep.blackjack.model.card.Card;
+import nextstep.blackjack.model.card.Cards;
 import nextstep.blackjack.model.participant.Dealer;
 import nextstep.blackjack.model.participant.Player;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Stream;
 
-import static nextstep.blackjack.model.card.Denomination.*;
-import static nextstep.blackjack.model.card.Pattern.*;
+import static nextstep.blackjack.model.rule.Fixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class RuleTest {
 
-    @Test
-    void dealerWin_딜러만_블랙잭() {
-        Dealer dealer = new Dealer();
-        dealer.draw(new Card(HEART, ACE)); // blackjack
-        dealer.draw(new Card(CLOVER, QUEEN));
+    public static Stream<Arguments> dealerWinDataProvider() {
+        return Stream.of(
+            Arguments.arguments("딜러만 블랙잭인 경우", ACE_QUEEN_BLACKJACK, ACE_NINE_20),
+            Arguments.arguments("플레이어가 버스트인 경우", ACE_NINE_20, QUEEN_NINE_FIVE_25_BUST),
+            Arguments.arguments("둘 다 버스트 아니고, 딜러 점수가 높은 경우", TEN_NINE_19, NINE_EIGHT_17)
+        );
+    }
 
-        Player player = new Player("플레이어");
-        player.draw(new Card(CLOVER, ACE)); // 20
-        player.draw(new Card(HEART, NINE));
+    @ParameterizedTest(name = "케이스 : {0}")
+    @MethodSource("dealerWinDataProvider")
+    void dealerWin(String title, Cards dealerCards, Cards playerCards) {
+        Dealer dealer = new Dealer(dealerCards);
+
+        Player player = new Player("플레이어", playerCards);
         player.initBetAmount(1000);
 
         Rule rule = new Rule(dealer, Arrays.asList(player));
@@ -32,107 +39,43 @@ class RuleTest {
                 .containsEntry("플레이어", -1000.0);
     }
 
-    @Test
-    void dealerWin_플레이어만_버스트() {
-        Dealer dealer = new Dealer();
-        dealer.draw(new Card(HEART, ACE)); // blackjack
-        dealer.draw(new Card(CLOVER, QUEEN));
 
-        Player player = new Player("플레이어");
-        player.draw(new Card(CLOVER, QUEEN)); // 25
-        player.draw(new Card(HEART, NINE));
-        player.draw(new Card(SPADE, FIVE));
+    public static Stream<Arguments> playerWinDataProvider() {
+        return Stream.of(
+                Arguments.arguments("플레이어만 블랙잭인 경우", ACE_NINE_20, ACE_QUEEN_BLACKJACK, -1500.0, 1500.0),
+                Arguments.arguments("딜러가 버스트인 경우", QUEEN_NINE_FIVE_25_BUST, TEN_NINE_19, -1000.0, 1000.0),
+                Arguments.arguments("둘 다 버스트 아니고, 플레이어 점수가 더 높은 경우",NINE_EIGHT_17, TEN_NINE_19, -1000.0, 1000.0)
+        );
+    }
+
+    @ParameterizedTest(name = "케이스 : {0}")
+    @MethodSource("playerWinDataProvider")
+    void playerWin(String title, Cards dealerCards, Cards playerCards, double dealerProfit, double playerProfit) {
+        Dealer dealer = new Dealer(dealerCards);
+
+        Player player = new Player("플레이어", playerCards);
         player.initBetAmount(1000);
 
         Rule rule = new Rule(dealer, Arrays.asList(player));
         Map<String, Double> resultMap = rule.getResultMap();
         assertThat(resultMap)
-                .containsEntry(Dealer.DEFAULT_NAME, 1000.0)
-                .containsEntry("플레이어", -1000.0);
+                .containsEntry(Dealer.DEFAULT_NAME, dealerProfit)
+                .containsEntry("플레이어", playerProfit);
     }
 
-    @Test
-    void dealerWin_딜러의_점수가_더높은경우() {
-        Dealer dealer = new Dealer(); // 19
-        dealer.draw(new Card(HEART, TEN));
-        dealer.draw(new Card(CLOVER, NINE));
-
-        Player player = new Player("플레이어"); // 17
-        player.draw(new Card(CLOVER, NINE));
-        player.draw(new Card(HEART, EIGHT));
-        player.initBetAmount(1000);
-
-        Rule rule = new Rule(dealer, Arrays.asList(player));
-        Map<String, Double> resultMap = rule.getResultMap();
-        assertThat(resultMap)
-                .containsEntry(Dealer.DEFAULT_NAME, 1000.0)
-                .containsEntry("플레이어", -1000.0);
+    public static Stream<Arguments> drawDataProvider() {
+        return Stream.of(
+                Arguments.arguments("둘 다 블랙잭인 경우", ACE_KING_BLACKJACK, ACE_QUEEN_BLACKJACK),
+                Arguments.arguments("점수가 같은 경우", NINE_KING_19, TEN_NINE_19)
+        );
     }
 
-    @Test
-    void playerWin_플레이어만_블랙잭인_경우() {
-        Dealer dealer = new Dealer();
-        dealer.draw(new Card(HEART, ACE)); // 20
-        dealer.draw(new Card(CLOVER, NINE));
+    @ParameterizedTest(name = "케이스 : {0}")
+    @MethodSource("drawDataProvider")
+    void draw(String title, Cards dealerCards, Cards playerCards) {
+        Dealer dealer = new Dealer(dealerCards);
 
-        Player player = new Player("플레이어");
-        player.draw(new Card(CLOVER, ACE)); // blackjack
-        player.draw(new Card(HEART, KING));
-        player.initBetAmount(1000);
-
-        Rule rule = new Rule(dealer, Arrays.asList(player));
-        Map<String, Double> resultMap = rule.getResultMap();
-        assertThat(resultMap)
-                .containsEntry(Dealer.DEFAULT_NAME, -1500.0)
-                .containsEntry("플레이어", 1500.0);
-    }
-
-    @Test
-    void playerWin_딜러만_버스트인_경우() {
-        Dealer dealer = new Dealer();
-        dealer.draw(new Card(HEART, SIX)); // 25
-        dealer.draw(new Card(CLOVER, NINE));
-        dealer.draw(new Card(DIAMOND, KING));
-
-        Player player = new Player("플레이어");
-        player.draw(new Card(CLOVER, ACE)); // 19
-        player.draw(new Card(HEART, NINE));
-        player.initBetAmount(1000);
-
-        Rule rule = new Rule(dealer, Arrays.asList(player));
-        Map<String, Double> resultMap = rule.getResultMap();
-        assertThat(resultMap)
-                .containsEntry(Dealer.DEFAULT_NAME, -1000.0)
-                .containsEntry("플레이어", 1000.0);
-    }
-
-    @Test
-    void playerWin_플레이어_점수가_더높은경우() {
-        Dealer dealer = new Dealer();
-        dealer.draw(new Card(CLOVER, NINE)); // 19
-        dealer.draw(new Card(DIAMOND, KING));
-
-        Player player = new Player("플레이어");
-        player.draw(new Card(CLOVER, JACK)); // 20
-        player.draw(new Card(DIAMOND, KING));
-        player.initBetAmount(1000);
-
-        Rule rule = new Rule(dealer, Arrays.asList(player));
-        Map<String, Double> resultMap = rule.getResultMap();
-        assertThat(resultMap)
-                .containsEntry(Dealer.DEFAULT_NAME, -1000.0)
-                .containsEntry("플레이어", 1000.0);
-    }
-
-    @Test
-    void draw_둘다_블랙잭인경우() {
-        Dealer dealer = new Dealer();
-        dealer.draw(new Card(HEART, ACE)); // blackjack
-        dealer.draw(new Card(CLOVER, QUEEN));
-
-        Player player = new Player("플레이어");
-        player.draw(new Card(CLOVER, ACE)); // blackjack
-        player.draw(new Card(HEART, KING));
+        Player player = new Player("플레이어", playerCards);
         player.initBetAmount(1000);
 
         Rule rule = new Rule(dealer, Arrays.asList(player));
@@ -142,25 +85,4 @@ class RuleTest {
                 .containsEntry(Dealer.DEFAULT_NAME, 0.0)
                 .containsEntry("플레이어", 0.0);
     }
-
-    @Test
-    void draw_점수가같은경우() {
-        Dealer dealer = new Dealer();
-        dealer.draw(new Card(HEART, NINE)); // 19
-        dealer.draw(new Card(CLOVER, QUEEN));
-
-        Player player = new Player("플레이어");
-        player.draw(new Card(CLOVER, NINE)); // 19
-        player.draw(new Card(HEART, KING));
-        player.initBetAmount(1000);
-
-        Rule rule = new Rule(dealer, Arrays.asList(player));
-        Map<String, Double> resultMap = rule.getResultMap();
-
-        assertThat(resultMap)
-                .containsEntry(Dealer.DEFAULT_NAME, 0.0)
-                .containsEntry("플레이어", 0.0);
-    }
-
-
 }

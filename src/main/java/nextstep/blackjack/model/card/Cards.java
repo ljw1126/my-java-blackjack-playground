@@ -3,10 +3,10 @@ package nextstep.blackjack.model.card;
 import nextstep.blackjack.model.participant.Score;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.joining;
 
 public class Cards {
     private static final int TWO = 2;
@@ -14,6 +14,10 @@ public class Cards {
     private List<Card> cardList = new ArrayList<>();
 
     public Cards() {
+    }
+
+    public Cards(Card... cards) {
+        Collections.addAll(cardList, cards);
     }
 
     public void add(Card card) {

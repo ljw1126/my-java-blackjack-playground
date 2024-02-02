@@ -8,8 +8,12 @@ public abstract class AbstractParticipant implements Participant {
     protected Cards cards;
     private int betAmount;
     public AbstractParticipant(String name) {
+        this(name, new Cards());
+    }
+
+    public AbstractParticipant(String name, Cards cards) {
         this.name = name;
-        this.cards = new Cards();
+        this.cards = cards;
         this.betAmount = 0;
     }
 

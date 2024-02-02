@@ -3,7 +3,6 @@ package nextstep.blackjack.model.participant;
 import nextstep.blackjack.model.card.Card;
 import nextstep.blackjack.model.card.Denomination;
 import nextstep.blackjack.model.card.Pattern;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
