@@ -15,4 +15,10 @@ public interface Participant {
     Score score();
     String showCards();
     void initBetAmount(int betAmount);
+
+    boolean isFinished();
+
+    void stay();
+
+    double profit();
 }

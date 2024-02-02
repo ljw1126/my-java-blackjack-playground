@@ -65,4 +65,19 @@ public abstract class AbstractParticipant implements Participant {
     public String showCards() {
         return cards().joinCardList();
     }
+
+    @Override
+    public boolean isFinished() {
+        return this.state.isFinished();
+    }
+
+    @Override
+    public void stay() {
+        setState(this.state.stay());
+    }
+
+    @Override
+    public double profit() {
+        return this.state.profit(this.betAmount);
+    }
 }

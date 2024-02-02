@@ -29,23 +29,23 @@ public class Rule {
 
     private double judgement(Dealer dealer, Participant player) {
         if(isDealerWin(dealer, player)) {
-            return -(player.getBetAmount());
+            return negativeProfit(player);
         }
 
         if(isPlayerWin(dealer, player)) {
-            return calculateProfit(player);
+            return player.profit();
         }
 
         return 0.0;
     }
 
-    private double calculateProfit(Participant player) {
-        int betAmount = player.getBetAmount();
-        if(player.isBlackjack()) {
-            return betAmount * 1.5; // TODO. 매직넘버
+    private double negativeProfit(Participant player) {
+        double profit = player.profit();
+        if(profit > 0) {
+            return -(profit);
         }
 
-        return betAmount;
+        return profit;
     }
 
     private boolean isDealerWin(Dealer dealer, Participant player) {

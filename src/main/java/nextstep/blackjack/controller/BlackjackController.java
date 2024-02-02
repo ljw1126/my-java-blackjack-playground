@@ -4,6 +4,7 @@ import nextstep.blackjack.model.card.Deck;
 import nextstep.blackjack.model.participant.Dealer;
 import nextstep.blackjack.model.participant.Participant;
 import nextstep.blackjack.model.rule.Rule;
+import nextstep.blackjack.model.state.StateFactory;
 import nextstep.blackjack.view.InputView;
 import nextstep.blackjack.view.OutputView;
 
@@ -52,25 +53,24 @@ public class BlackjackController {
             String answer = inputView.askDraw(player.getName());
 
             if (ANSWER_N.equals(answer)) {
+                player.stay();
                 break;
             }
 
             player.draw(deck.draw());
             System.out.println(player.showCards());
 
-            if (player.isBust()) {
+            if (player.isFinished()) {
                 break;
             }
         }
     }
 
     private void deal(Deck deck, Dealer dealer, List<Participant> players) {
-        dealer.draw(deck.draw());
-        dealer.draw(deck.draw());
+        dealer.setState(StateFactory.create(deck.draw(), deck.draw()));
 
         for(Participant player : players) {
-            player.draw(deck.draw());
-            player.draw(deck.draw());
+            player.setState(StateFactory.create(deck.draw(), deck.draw()));
         }
     }
 
