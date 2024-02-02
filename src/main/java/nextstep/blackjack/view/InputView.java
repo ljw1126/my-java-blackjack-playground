@@ -3,7 +3,6 @@ package nextstep.blackjack.view;
 import nextstep.blackjack.model.participant.Participant;
 import nextstep.blackjack.model.participant.Player;
 
-import javax.print.attribute.standard.MediaSize;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;

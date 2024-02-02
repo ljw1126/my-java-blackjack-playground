@@ -1,7 +1,6 @@
 package nextstep.blackjack.model.participant;
 
 import nextstep.blackjack.model.card.Card;
-import nextstep.blackjack.model.card.Cards;
 
 public class Dealer extends AbstractParticipant{
 
