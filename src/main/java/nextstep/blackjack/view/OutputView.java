@@ -55,6 +55,7 @@ public class OutputView {
 
     public static void showResultProfit(Map<String, Integer> resultMap) {
         StringBuilder sb = new StringBuilder();
+        sb.append("## 최종 수익").append("\n");
         for(String name : resultMap.keySet()) {
             sb.append(name).append(" : ").append(resultMap.get(name)).append("\n");
         }
