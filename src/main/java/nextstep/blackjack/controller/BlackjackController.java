@@ -39,6 +39,8 @@ public class BlackjackController {
             dealer.draw(deck.draw());
             System.out.println();
         }
+
+        toStayIfHit(dealer);
     }
 
     private void playerPhase(Deck deck, List<Participant> players, InputView inputView) {
@@ -53,7 +55,7 @@ public class BlackjackController {
             String answer = inputView.askDraw(player.getName());
 
             if (ANSWER_N.equals(answer)) {
-                toStayIfNotBlackjack(player);
+                toStayIfHit(player);
                 break;
             }
 
@@ -66,9 +68,9 @@ public class BlackjackController {
         }
     }
 
-    private void toStayIfNotBlackjack(Participant player) {
-        if(!player.isBlackjack()) {
-            player.stay();
+    private void toStayIfHit(Participant participant) {
+        if(!participant.isBlackjack() && !participant.isBust()) {
+            participant.stay();
         }
     }
 
