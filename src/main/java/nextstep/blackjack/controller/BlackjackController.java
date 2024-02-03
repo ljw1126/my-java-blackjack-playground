@@ -53,7 +53,7 @@ public class BlackjackController {
             String answer = inputView.askDraw(player.getName());
 
             if (ANSWER_N.equals(answer)) {
-                player.stay();
+                toStayIfNotBlackjack(player);
                 break;
             }
 
@@ -63,6 +63,12 @@ public class BlackjackController {
             if (player.isFinished()) {
                 break;
             }
+        }
+    }
+
+    private void toStayIfNotBlackjack(Participant player) {
+        if(!player.isBlackjack()) {
+            player.stay();
         }
     }
 
